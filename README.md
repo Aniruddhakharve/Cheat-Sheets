@@ -4,7 +4,7 @@ This repository is a personal DevOps interview and daily revision kit.
 
 ## Topics
 
-- [GitHub](./cheatsheets/github.md)
+- [GitHub](./cheatsheets/Git-day-22-to-26-cheatsheet.md)
 - [Docker](./cheatsheets/docker.md)
 - [CI/CD with GitHub Actions](./cheatsheets/github-actions-cicd.md)
 - [Kubernetes (K8s)](./cheatsheets/kubernetes.md)
