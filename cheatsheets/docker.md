@@ -1,14 +1,31 @@
-# Docker Cheat Sheet
-
-## Quick Commands
-- `docker build -t app:latest .`
-- `docker run -p 8080:8080 app:latest`
-- `docker ps -a`
-- `docker exec -it <container> sh`
-- `docker-compose up -d`
-
-## Interview Pointers
-- Image vs Container
-- Layers and caching
-- Volumes and networking
-- Multi-stage builds
+Docker
+├── Core Concepts
+├── Installation & Verification
+├── Container Commands
+├── Image Commands
+├── Container Lifecycle
+├── Interactive & Detached Mode
+├── Ports
+├── Logs & Exec
+├── Dockerfile
+├── CMD vs ENTRYPOINT
+├── COPY vs ADD
+├── .dockerignore
+├── Image Layers & Cache
+├── Volumes
+├── Bind Mounts
+├── Networking
+├── Docker Compose
+├── Environment Variables
+├── Healthchecks
+├── depends_on
+├── Cleanup
+├── Docker Hub
+├── Multi-stage Builds
+├── Java + Maven + WAR + Tomcat
+├── jlink
+├── Non-root Containers
+├── Day-36 Real Project Commands
+├── Errors We Faced
+├── Troubleshooting
+└── Interview Questions
