@@ -1,12 +1,8 @@
-# 🚀 GitHub Actions & CI/CD — Interview Cheat Sheet
+# 🚀 90 Days of DevOps — Day 38 to Day 49 Interview Cheat Sheet
 
 > **Purpose:** Quick interview revision — not a replacement for hands-on practice.
 >
-> This cheat sheet covers GitHub Actions, CI/CD, Docker-based pipelines, reusable workflows, artifacts, secrets, deployment concepts, and DevSecOps concepts from **Day 38 → Day 49**.
-
-> **Project Reference:**  
-> My end-to-end DevSecOps implementation is available here:  
-> https://github.com/Aniruddhakharve/devsecops-capstone-project
+> This cheat sheet covers the important concepts, commands, examples, errors, fixes, and interview explanations learned from **Day 38 → Day 49**, including the **NodeGoat DevSecOps Capstone Project**.
 
 ---
 
@@ -69,10 +65,9 @@ name: Aniruddha       # String
 port: 8080            # Integer
 enabled: true         # Boolean
 version: 1.0          # Number
-
 packages:
   - git
-  - docker            # List
+  - docker             # List
 ```
 
 ## Interview Answer
@@ -138,8 +133,6 @@ Security
  ↓
 Deploy Automatically
 ```
-
----
 
 ## CI/CD Example
 
@@ -221,7 +214,7 @@ run        → Shell command
 uses: actions/checkout@v4
 ```
 
-Uses an existing GitHub Action.
+Uses a reusable GitHub Action.
 
 ```yaml
 run: echo "Hello"
@@ -303,7 +296,6 @@ strategy:
   matrix:
     os: [ubuntu-latest, windows-latest]
     python: ["3.11", "3.12"]
-
     exclude:
       - os: windows-latest
         python: "3.11"
@@ -372,6 +364,8 @@ Useful when:
 
 A self-hosted runner can have labels.
 
+Example:
+
 ```yaml
 runs-on: [self-hosted, linux]
 ```
@@ -394,7 +388,6 @@ A job is a collection of steps.
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - run: echo "Build"
 ```
@@ -430,12 +423,11 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - run: echo "$APP_NAME"
 ```
 
-### Step-Level Environment Variable
+Step-level:
 
 ```yaml
 steps:
@@ -582,7 +574,6 @@ Useful for:
 - Build output
 - Security reports
 - Generated files
-- Docker image archives
 
 ---
 
@@ -756,8 +747,6 @@ with:
 
 ## Secrets
 
-Reusable workflow:
-
 ```yaml
 secrets:
   docker_token:
@@ -812,7 +801,6 @@ Example:
 ```yaml
 runs:
   using: composite
-
   steps:
     - shell: bash
       run: echo "Hello"
@@ -823,8 +811,6 @@ Use:
 ```yaml
 uses: ./.github/actions/my-action
 ```
-
----
 
 ## Reusable Workflow vs Composite Action
 
@@ -948,6 +934,8 @@ environment = production
 
 Useful for external automation systems.
 
+---
+
 ## Interview Answer
 
 > "`workflow_call` is for reusable workflows, `workflow_run` is for reacting to another workflow's completion, and `repository_dispatch` allows external systems to trigger GitHub Actions."
@@ -1005,30 +993,28 @@ Build + Test
      ↓
 Prepare Short SHA
      ↓
-  ┌───────────────┐
-  ↓               ↓
+ ┌───────────────┐
+ ↓               ↓
 Docker latest   Docker SHA
-  ↓               ↓
-  └───────┬───────┘
-          ↓
-Production Deployment
-          ↓
-Environment Approval
+ ↓               ↓
+ └───────┬───────┘
+         ↓
+ Production Deployment
+         ↓
+ Environment Approval
 
 Every 12 Hours
        ↓
-Health Check
+ Health Check
        ↓
-Pull Image
+ Pull Image
        ↓
-Run Container
+ Run Container
        ↓
-/health
+ /health
        ↓
-HTTP 200
+ HTTP 200
 ```
-
----
 
 ## Reusable Build/Test
 
@@ -1111,11 +1097,11 @@ Build + Test
    ↓
 Prepare Short SHA
    ↓
-  ┌─────────────┐
-  ↓             ↓
+ ┌─────────────┐
+ ↓             ↓
 Docker latest  Docker SHA
-  └──────┬──────┘
-         ↓
+ └──────┬──────┘
+        ↓
 Production Deploy
 ```
 
@@ -1245,12 +1231,6 @@ Repository:
 devsecops-capstone-project
 ```
 
-Project URL:
-
-```text
-https://github.com/Aniruddhakharve/devsecops-capstone-project
-```
-
 Application:
 
 ```text
@@ -1276,21 +1256,97 @@ NodeGoat is intentionally vulnerable and is useful for learning application secu
 
 ---
 
-# What is DevSecOps?
+# NodeGoat Application
+
+Main server:
+
+```text
+server.js
+```
+
+Application port:
+
+```text
+4000
+```
+
+Start command:
+
+```bash
+npm start
+```
+
+MongoDB connection in Compose:
+
+```text
+mongodb://mongo:27017/nodegoat
+```
+
+Architecture:
+
+```text
+NodeGoat
+   ↓
+Express Application
+   ↓
+MongoDB
+```
+
+Docker Compose:
+
+```text
+web container
+     ↓
+mongo container
+```
+
+---
+
+# Why NodeGoat?
+
+The purpose is not simply to deploy an application.
+
+The project demonstrates:
+
+```text
+Development
+    ↓
+Testing
+    ↓
+Security
+    ↓
+Docker
+    ↓
+Image Security
+    ↓
+Registry
+    ↓
+Deployment
+    ↓
+DAST
+    ↓
+Health Verification
+```
+
+This is the practical difference between ordinary CI/CD and **DevSecOps**.
+
+---
+
+# DevSecOps
 
 ## Definition
 
-> DevSecOps integrates security into the DevOps lifecycle instead of treating security as a separate final step.
+> "DevSecOps integrates security into the DevOps lifecycle instead of treating security as a separate final step."
 
 Traditional:
 
 ```text
 Develop
-   ↓
+  ↓
 Build
-   ↓
+  ↓
 Deploy
-   ↓
+  ↓
 Security
 ```
 
@@ -1318,115 +1374,9 @@ Deploy
 DAST
 ```
 
-### Main Principle
-
-```text
-DevOps
-   +
-Security
-   =
-DevSecOps
-```
-
-Security is integrated into the same automated delivery lifecycle.
-
 ---
 
-# 🔐 DevSecOps Key Principles
-
-## 1. Catch Problems Early
-
-A security issue detected during development or pull request validation can be addressed before deployment.
-
-```text
-Developer
-   ↓
-Security Check
-   ↓
-Early Detection
-```
-
----
-
-## 2. Automate Security Checks
-
-Security checks should run automatically instead of depending entirely on manual review.
-
-```text
-Git Push
-   ↓
-Pipeline
-   ↓
-Security Scans
-```
-
----
-
-## 3. Security Throughout the Lifecycle
-
-Security is not only one final step.
-
-```text
-Source Code
-     ↓
-Dependencies
-     ↓
-Dockerfile
-     ↓
-Container Image
-     ↓
-Running Application
-```
-
----
-
-## 4. Never Put Secrets in Code
-
-Examples of sensitive values:
-
-```text
-Passwords
-API Keys
-Tokens
-Private Keys
-Cloud Credentials
-```
-
-Use:
-
-```text
-GitHub Secrets
-Environment Variables
-AWS Secrets Manager
-AWS Systems Manager Parameter Store
-```
-
-as appropriate.
-
----
-
-## 5. Least Privilege
-
-Give workflows only the permissions they actually need.
-
-Example:
-
-```yaml
-permissions:
-  contents: read
-```
-
-Concept:
-
-```text
-Minimum Required Permissions
-          ↓
-Reduced Attack Surface
-```
-
----
-
-# 🧪 Security Testing Types
+# Security Testing Types
 
 ## SAST
 
@@ -1442,10 +1392,10 @@ SAST
 Security Findings
 ```
 
-Example tool:
+Example concept:
 
 ```text
-Semgrep
+Detect insecure code patterns
 ```
 
 ---
@@ -1459,18 +1409,12 @@ Tests a running application.
 ```text
 Running Application
        ↓
-      ZAP
+     ZAP
        ↓
 Security Findings
 ```
 
-Example tool:
-
-```text
-OWASP ZAP
-```
-
-This is why DAST belongs after application deployment/startup.
+This is why ZAP belongs after deployment/application startup.
 
 ---
 
@@ -1478,18 +1422,14 @@ This is why DAST belongs after application deployment/startup.
 
 Checks third-party dependencies for known vulnerabilities.
 
+Example:
+
 ```text
 package.json
     ↓
 Dependency Scanner
     ↓
 Known CVEs
-```
-
-Example:
-
-```text
-npm audit
 ```
 
 ---
@@ -1501,16 +1441,10 @@ Looks for accidentally committed secrets.
 Examples:
 
 ```text
-API Keys
+API keys
 Passwords
 Tokens
-Private Keys
-```
-
-Example:
-
-```text
-Gitleaks
+Private keys
 ```
 
 ---
@@ -1519,7 +1453,7 @@ Gitleaks
 
 Checks Dockerfile best practices and potential problems.
 
-Example:
+Example tool:
 
 ```text
 Hadolint
@@ -1529,7 +1463,7 @@ Hadolint
 
 ## Container Image Scanning
 
-Checks the built image for known vulnerabilities.
+Checks the built image for vulnerabilities.
 
 Example:
 
@@ -1553,53 +1487,128 @@ Vulnerability Report
 
 ---
 
-# 🛡️ DevSecOps Tools Used in NodeGoat
+# NodeGoat DevSecOps Pipeline
 
-| Tool | Category | Purpose |
-|---|---|---|
-| JSHint | Linting | Code quality |
-| Semgrep | SAST | Source-code security |
-| Gitleaks | Secret Scanning | Detect leaked credentials |
-| npm audit | Dependency Scan | Detect vulnerable npm packages |
-| Hadolint | Dockerfile Lint | Dockerfile best practices |
-| Trivy | Image Scan | Container vulnerabilities |
-| OWASP ZAP | DAST | Running web application security |
+The actual project chain was designed around:
+
+```text
+SAST
+ ↓
+Secret Scan
+ ↓
+Dependency Scan
+ ↓
+Dockerfile Lint
+ ↓
+Docker Build
+ ↓
+nodegoat:ci
+ ↓
+nodegoat.tar Artifact
+ ↓
+Trivy Image Scan
+ ↓
+Docker Hub Push
+ ↓
+EC2 Deployment
+ ↓
+Health Check
+ ↓
+OWASP ZAP DAST
+```
+
+Important optimization:
+
+> The same Docker build artifact was reused for scanning and publishing instead of unnecessarily rebuilding the image.
 
 ---
 
-# 🧱 NodeGoat Architecture
+# Why Scan Before Push?
+
+Preferred security flow:
 
 ```text
-NodeGoat
-   ↓
-Express Application
-   ↓
-MongoDB
+Build Image
+    ↓
+Scan Image
+    ↓
+If acceptable
+    ↓
+Push to Docker Hub
 ```
 
-Docker Compose:
-
-```text
-web container
-     ↓
-mongo container
-```
-
-Application port:
-
-```text
-4000
-```
-
-MongoDB connection:
-
-```text
-mongodb://mongo:27017/nodegoat
-```
+This prevents an unvalidated image from being published.
 
 ---
 
-# 🌐 Docker Networking in NodeGoat
+# Docker Artifact Concept
+
+The CI pipeline created:
+
+```text
+nodegoat:ci
+```
+
+and stored the image as:
+
+```text
+nodegoat.tar
+```
+
+Concept:
+
+```text
+Build
+ ↓
+Docker Image
+ ↓
+Save as Artifact
+ ↓
+Next Job
+ ↓
+Load Image
+ ↓
+Scan
+ ↓
+Push
+```
+
+This avoids rebuilding the exact same image.
+
+---
+
+# Docker Compose
+
+Important configuration:
+
+```yaml
+services:
+  web:
+    ...
+    depends_on:
+      - mongo
+
+  mongo:
+    ...
+```
+
+MongoDB hostname from the application:
+
+```text
+mongo
+```
+
+Not:
+
+```text
+localhost
+```
+
+Because containers communicate through the Compose network.
+
+---
+
+# Important Docker Networking Concept
 
 Inside the NodeGoat container:
 
@@ -1633,1351 +1642,406 @@ not the MongoDB container.
 
 ---
 
-# 💾 Docker Compose Volume
+# Important MongoDB Confusion
 
-MongoDB uses a named volume:
-
-```yaml
-volumes:
-  mongo_data:
-```
-
-and:
-
-```yaml
-volumes:
-  - mongo_data:/data/db
-```
-
-Purpose:
+This was an important concept:
 
 ```text
-MongoDB Container
-      ↓
-Persistent Volume
-      ↓
-Data survives container recreation
-```
-
----
-
-# ❤️ Docker Health Checks
-
-NodeGoat health check:
-
-```yaml
-healthcheck:
-  test: ["CMD", "wget", "--spider", "-q", "http://localhost:4000"]
-  interval: 30s
-  timeout: 10s
-  retries: 3
-```
-
-MongoDB health check:
-
-```yaml
-healthcheck:
-  test: ["CMD", "mongo", "--eval", "db.adminCommand('ping')"]
-  interval: 10s
-  timeout: 5s
-  retries: 5
-```
-
----
-
-# ⏳ `depends_on`
-
-```yaml
-depends_on:
-  mongo:
-    condition: service_healthy
-```
-
-This means the web application waits for MongoDB to become healthy before startup.
-
-Important:
-
-```text
-Container started
-≠
-Service ready
-```
-
-Health checks help verify actual readiness.
-
----
-
-# 🧠 Important MongoDB Confusion
-
-This:
-
-```yaml
 user: mongodb
 ```
 
-does not mean:
+does **not** mean:
 
 ```text
 MongoDB database username
 ```
 
-It refers to the operating-system/container user.
+It refers to the OS/container user.
 
 Database authentication is a separate concept.
 
+In this Compose setup MongoDB authentication was not enabled, so the connection did not require database credentials.
+
 ---
 
-# 🐳 Dockerfile Security Improvements
+# NodeGoat Dockerfile
 
-The final Dockerfile uses:
+Original NodeGoat Docker setup used an older Node image:
 
 ```dockerfile
-FROM node:20-alpine
+FROM node:12-alpine
 ```
 
-and a multi-stage build.
+Important interview observation:
 
-The runtime stage uses:
+> The application contains older/deprecated dependencies because NodeGoat is intentionally vulnerable and designed for security training.
 
-```dockerfile
-USER $USER
-```
-
-where:
-
-```text
-USER=node
-```
-
-Other improvements include:
-
-```text
-.dockerignore
-Production dependencies
-Multi-stage build
-Non-root runtime user
-```
+Therefore vulnerability/security findings are expected to be part of the learning exercise.
 
 ---
 
-# 🔍 SAST — Semgrep
+# DevSecOps Tool Categories
 
-Semgrep scans source code for insecure patterns.
+Remember the purpose instead of memorizing only tool names:
 
-Command:
-
-```bash
-semgrep scan \
-  --config=auto \
-  --json \
-  --output=semgrep-report.json
-```
-
-The report is uploaded as an artifact.
-
-One observed scan produced approximately:
-
-```text
-WARNING: 25
-ERROR:    7
-INFO:     1
-```
-
-Examples included:
-
-```text
-Dangerous eval() usage
-Private key material
-Open redirect-related findings
-Other insecure coding patterns
-```
+| Tool Category | Purpose |
+|---|---|
+| Linter | Code quality/style |
+| SAST | Source-code security |
+| Secret scanner | Detect leaked credentials |
+| Dependency scanner | Detect vulnerable packages |
+| Hadolint | Dockerfile best practices |
+| Trivy | Container/image vulnerabilities |
+| ZAP | Running application security testing |
 
 ---
 
-# 🔑 Secret Scan — Gitleaks
+# GitHub Actions DevSecOps Concepts
 
-Workflow:
+Important concepts used:
+
+```text
+workflow_call
+inputs
+secrets
+env
+if
+needs
+id
+outputs
+artifacts
+matrix
+```
+
+Example dependency:
 
 ```yaml
-- name: checkout code
-  uses: actions/checkout@v7
-  with:
-    fetch-depth: 0
-
-- name: Run Gitleaks
-  uses: gitleaks/gitleaks-action@v2
+needs:
+  - security-scan
+  - dockerfile-lint
 ```
 
-`fetch-depth: 0` is important because it makes the complete Git history available.
-
----
-
-# 🚨 Secret Leak Lesson
-
-During development, Gitleaks detected secret-like values.
-
-The project contained:
+Means:
 
 ```text
-Private key
-Hardcoded ZAP API key
-```
-
-The ZAP API key configuration was changed to:
-
-```javascript
-process.env.ZAP_API_KEY || ""
-```
-
-The private key file was removed.
-
-Important rule:
-
-```text
-Removing a secret from the current file
-does not automatically remove it from Git history.
-```
-
-For a real exposed secret:
-
-```text
-Detect
-  ↓
-Rotate / Revoke
-  ↓
-Remove from source
-  ↓
-Clean history when appropriate
+Security checks
+      ↓
+Docker build
 ```
 
 ---
 
-# 📦 Dependency Scanning — npm audit
+# Parallel Jobs
 
-The workflow runs:
+Security checks that don't depend on each other can run in parallel.
 
-```bash
-npm ci
-```
-
-and:
-
-```bash
-npm audit --json > npm-audit-report.json || true
-```
-
-One initial audit reported approximately:
+Concept:
 
 ```text
-145 vulnerabilities
-
-8 low
-33 moderate
-66 high
-38 critical
+             ┌── SAST
+             │
+             ├── Secret Scan
+Code ────────┼── Dependency Scan
+             │
+             └── Hadolint
+                    ↓
+                 Docker Build
 ```
 
-This is expected to some extent because NodeGoat is intentionally vulnerable and uses an old dependency tree.
+This reduces pipeline runtime.
 
-I did not run:
-
-```bash
-npm audit fix --force
-```
-
-because it could introduce breaking changes.
-
----
-
-# 🐳 Dockerfile Linting — Hadolint
-
-Workflow:
-
-```yaml
-- name: Run Hadolint
-  uses: hadolint/hadolint-action@v3.3.0
-  with:
-    dockerfile: Dockerfile
-```
-
-Purpose:
+In the NodeGoat project, parallelization reduced the runtime from approximately:
 
 ```text
-Dockerfile
-   ↓
-Hadolint
-   ↓
-Best-practice checks
+7m 43s
+```
+
+to:
+
+```text
+6m 29s
+```
+
+Approximately:
+
+```text
+1m 14s improvement
 ```
 
 ---
 
-# 🛡️ Trivy Image Scanning
+# Important Trivy Concept
 
-The image is built:
+A successful Trivy command does **not automatically mean zero vulnerabilities**.
 
-```bash
-docker build -t nodegoat:ci .
-```
-
-Then saved:
-
-```bash
-docker save nodegoat:ci -o nodegoat.tar
-```
-
-The next workflow loads it:
-
-```bash
-docker load -i nodegoat.tar
-```
-
-Then Trivy scans:
-
-```yaml
-- name: Run Trivy image scan
-  uses: aquasecurity/trivy-action@v0.36.0
-  with:
-    image-ref: nodegoat:ci
-    format: table
-    severity: CRITICAL,HIGH
-    exit-code: 0
-```
-
----
-
-# ⚠️ Trivy Exit Code
-
-Important interview concept:
+For example:
 
 ```text
 exit-code: 0
 ```
 
-does not automatically mean:
+can mean:
+
+> The scan completed successfully and the report was generated.
+
+It does not necessarily mean:
 
 ```text
-0 vulnerabilities
-```
-
-It can simply mean the scan completed without using vulnerability findings as a failure condition.
-
-Always inspect the actual scan results.
-
-The trainer example used:
-
-```yaml
-exit-code: '1'
-```
-
-to block the pipeline for selected severities.
-
-In the NodeGoat capstone, I intentionally used report-only behavior because the application is intentionally vulnerable.
-
----
-
-# 📦 Why Save Docker Image as an Artifact?
-
-The image is built once.
-
-```text
-Docker Build
-     ↓
-nodegoat:ci
-     ↓
-docker save
-     ↓
-nodegoat.tar
-     ↓
-GitHub Artifact
-```
-
-Later:
-
-```text
-Download Artifact
-     ↓
-docker load
-     ↓
-Trivy Scan
-     ↓
-Docker Hub Push
-```
-
-This ensures the same built image can be scanned and published without rebuilding it.
-
----
-
-# 🏷️ SHA-Based Docker Tags
-
-The image tag is generated from:
-
-```text
-github.sha
-```
-
-Example:
-
-```text
-aniruddhakharve/nodegoat:264585bd...
-```
-
-The flow is:
-
-```text
-Git Commit
-    ↓
-Docker Build
-    ↓
-SHA Tag
-    ↓
-Docker Hub
-    ↓
-EC2 Deployment
-```
-
-This provides traceability.
-
----
-
-# 🔗 GitHub Actions Output Chain
-
-The image tag moves through:
-
-```text
-Step Output
-     ↓
-Job Output
-     ↓
-Reusable Workflow Output
-     ↓
-Main Pipeline
-     ↓
-Docker Push
-     ↓
-EC2 Deployment
-```
-
-The step creates the output:
-
-```bash
-echo "image-tag=${{ github.sha }}" >> "$GITHUB_OUTPUT"
-```
-
-The step has:
-
-```yaml
-id: meta
-```
-
-The job exposes:
-
-```yaml
-outputs:
-  image-tag: ${{ steps.meta.outputs.image-tag }}
-```
-
-The reusable workflow exposes the workflow output.
-
-The main workflow consumes it with:
-
-```yaml
-${{ needs.docker-build.outputs.image-tag }}
-```
-
----
-
-# 🔐 `secrets: inherit`
-
-Reusable workflows that need repository secrets can be called using:
-
-```yaml
-secrets: inherit
-```
-
-Example:
-
-```yaml
-docker-push:
-  uses: ./.github/workflows/docker-push.yml
-  secrets: inherit
-```
-
-This allows the called workflow to access the repository secrets it requires.
-
----
-
-# 🔀 Parallel Security Jobs
-
-Independent security jobs can run in parallel.
-
-Example:
-
-```text
-                 Lint
-                   │
-       ┌───────────┼─────────────┬──────────────┐
-       ▼           ▼             ▼              ▼
-      SAST      Gitleaks      npm audit     Hadolint
-       │           │             │              │
-       └───────────┴─────────────┴──────────────┘
-                            │
-                            ▼
-                       Docker Build
-```
-
-Configured using:
-
-```yaml
-needs: [lint]
-```
-
-This reduced the observed pipeline execution time.
-
-Observed:
-
-```text
-Before:
-7m 43s
-
-After:
-6m 29s
-```
-
-Improvement:
-
-```text
-~1m 14s
-```
-
----
-
-# 🔄 Full NodeGoat DevSecOps Pipeline
-
-```text
-Developer
-    ↓
-Git Push / Pull Request
-    ↓
-GitHub Actions
-    ↓
-Lint
-    ↓
- ┌──────────────┬──────────────┬──────────────┐
- ▼              ▼              ▼              ▼
-Test           SAST        Secret Scan   Dependency Scan
-                                             
- └──────────────┬──────────────┬──────────────┘
-                ▼
-         Dockerfile Lint
-                ↓
-          Docker Build
-                ↓
-         Docker Image Artifact
-                ↓
-           Trivy Scan
-                ↓
-           Docker Hub
-                ↓
-              EC2
-                ↓
-         Docker Compose
-                ↓
-         Health Check
-                ↓
-           OWASP ZAP
-                ↓
-              DAST
-```
-
----
-
-# ☁️ AWS EC2 Deployment
-
-The exact image version is deployed to EC2.
-
-Concept:
-
-```text
-GitHub Actions
-      ↓
-Docker Hub
-      ↓
-EC2
-      ↓
-Docker Compose
-      ↓
-NodeGoat + MongoDB
-```
-
-The deployment workflow:
-
-```text
-Connect to EC2
-      ↓
-Check Docker
-      ↓
-Check Docker Compose
-      ↓
-Create ~/devops
-      ↓
-Copy docker-compose.yml
-      ↓
-Create .env
-      ↓
-Login to Docker Hub
-      ↓
-docker compose pull
-      ↓
-docker compose down
-      ↓
-docker compose up -d --force-recreate
-```
-
----
-
-# 🔐 EC2 `.env`
-
-The deployment generates:
-
-```env
-DOCKER_USERNAME=<Docker Hub username>
-IMAGE_TAG=<Git SHA>
-```
-
-Permissions:
-
-```bash
-chmod 600 ~/devops/.env
-```
-
-This configuration allows Compose to pull the correct Docker image.
-
----
-
-# ❤️ Application Health Check
-
-After deployment:
-
-```bash
-curl -fsS http://${{ secrets.EC2_HOST }}:4000/login > /dev/null
-```
-
-Expected result:
-
-```text
-Checking application health...
-Application is healthy.
-```
-
-The important point:
-
-```text
-Container running
-≠
-Application healthy
-```
-
-The health check verifies the application is reachable.
-
----
-
-# 🕷️ OWASP ZAP
-
-## What is ZAP?
-
-OWASP ZAP = **OWASP Zed Attack Proxy**
-
-It performs dynamic web application security testing.
-
-```text
-Running NodeGoat
-       ↓
-OWASP ZAP
-       ↓
-Security Findings
-```
-
----
-
-# 🧪 ZAP Baseline vs Full Scan
-
-I initially tested a full ZAP scan.
-
-It took approximately:
-
-```text
-42+ minutes
-```
-
-The full scan was therefore too slow for the regular CI/CD pipeline.
-
-I switched to:
-
-```yaml
-zaproxy/action-baseline@v0.15.0
-```
-
-The baseline scan completed in approximately:
-
-```text
-7 minutes
-```
-
-as part of the pipeline.
-
----
-
-# 🔎 ZAP Findings
-
-The DAST scan identified observations including:
-
-```text
-Missing security headers
-Directory browsing
-Vulnerable JavaScript libraries
-Cross-domain JavaScript concerns
-XSS-related findings
-Other web security observations
-```
-
----
-
-# ⚠️ ZAP 403 Troubleshooting
-
-During initial implementation, ZAP completed the scan but the workflow then attempted GitHub issue creation.
-
-The workflow returned:
-
-```text
-403 Resource not accessible by integration
-```
-
-The important distinction is:
-
-```text
-ZAP Scan
-   ↓
-Completed
-   ↓
-GitHub Issue Creation
-   ↓
-403 Permission Error
-```
-
-The scan itself had completed; the failure happened during the later GitHub issue-writing operation.
-
-The workflow was changed to:
-
-```yaml
-allow_issue_writing: false
-```
-
----
-
-# 🔐 Security Policy in This Learning Project
-
-NodeGoat is intentionally vulnerable.
-
-Therefore security scans are primarily configured for reporting:
-
-```text
-Semgrep
-   ↓
-Findings
-
-Gitleaks
-   ↓
-Secret Detection
-
-npm audit
-   ↓
-Dependency Findings
-
-Trivy
-   ↓
-Image Findings
-
-ZAP
-   ↓
-DAST Findings
-```
-
-This does not mean vulnerabilities are acceptable in production.
-
-A production pipeline could define security gates such as:
-
-```text
-Critical Vulnerability
-        ↓
-Pipeline Failure
-        ↓
-Deployment Blocked
-```
-
----
-
-# 🧠 Security Gate vs Security Scanner
-
-A scanner answers:
-
-```text
-"What vulnerabilities exist?"
-```
-
-A security gate answers:
-
-```text
-"Should this result block the pipeline?"
-```
-
-Example:
-
-```text
-Trivy
-  ↓
-Finds CRITICAL CVE
-  ↓
-Policy decides
-  ↓
-Fail / Warn
+0 HIGH
+0 CRITICAL
 ```
 
 This distinction is important in interviews.
 
 ---
 
-# 🔐 GitHub Actions Security — Least Privilege
+# EC2 Deployment
 
-Recommended workflow-level permission when read access is sufficient:
-
-```yaml
-permissions:
-  contents: read
-```
-
-If a workflow needs to write pull-request comments:
-
-```yaml
-permissions:
-  contents: read
-  pull-requests: write
-```
-
-General principle:
-
-```text
-Grant only what the workflow requires.
-```
-
-If a third-party action is compromised, unnecessary write permissions could increase its potential impact.
-
----
-
-# 🚀 Production Improvements to Remember
-
-The capstone is a learning project.
-
-A production implementation could additionally use:
-
-```text
-OIDC authentication
-AWS Secrets Manager
-AWS Systems Manager Parameter Store
-Image digest pinning
-Dependency update automation
-Stricter vulnerability gates
-HTTPS
-Application Load Balancer
-Blue/Green Deployment
-Rolling Deployment
-ECS / EKS
-Centralized logging
-Monitoring
-Alerting
-```
-
----
-
-# 🔥 OIDC — Important Interview Concept
-
-## What is OIDC?
-
-OIDC = **OpenID Connect**
-
-In GitHub Actions, OIDC can be used for cloud authentication without storing long-lived cloud credentials in GitHub Secrets.
+The NodeGoat application was deployed to AWS EC2.
 
 Concept:
 
 ```text
 GitHub Actions
       ↓
-OIDC Token
+Docker Image
       ↓
-Cloud Identity Provider
+EC2
       ↓
-Short-Lived Credentials
+Docker
       ↓
-AWS
+NodeGoat
+      ↓
+MongoDB
 ```
 
-### Traditional Approach
+Application port:
 
 ```text
-AWS Access Key
-AWS Secret Key
-       ↓
-GitHub Secrets
-       ↓
-GitHub Actions
-```
-
-### OIDC Approach
-
-```text
-GitHub Actions
-       ↓
-OIDC
-       ↓
-Assume IAM Role
-       ↓
-Temporary Credentials
-```
-
-### Why Is OIDC Important?
-
-It reduces the need to store long-lived AWS access keys.
-
-It is widely useful for production CI/CD authentication.
-
-### Interview Answer
-
-> "GitHub Actions OIDC allows the workflow to obtain short-lived cloud credentials through an identity trust relationship instead of storing long-lived AWS access keys in GitHub Secrets."
-
----
-
-# 🔗 OIDC AWS Concept
-
-Typical architecture:
-
-```text
-GitHub Actions
-      ↓
-OIDC Identity Token
-      ↓
-AWS IAM OIDC Provider
-      ↓
-IAM Role
-      ↓
-Temporary AWS Credentials
-      ↓
-AWS Resources
-```
-
-Important keywords:
-
-```text
-OIDC
-IAM Role
-Trust Policy
-Short-Lived Credentials
-Federation
+4000
 ```
 
 ---
 
-# 🧱 Action Pinning — Supply Chain Security
+# Deployment Verification
 
-Using:
-
-```yaml
-uses: actions/checkout@v4
-```
-
-is convenient.
-
-A stronger supply-chain security practice is pinning an action to a specific commit SHA:
-
-```yaml
-uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
-```
-
-Concept:
+The deployed application was verified with:
 
 ```text
-Tag
- ↓
-Can potentially move
-
-Commit SHA
- ↓
-Fixed version
+MongoDB healthy
+NodeGoat healthy
+EC2 port 4000 accessible
 ```
 
-This reduces the risk of silently changing action code through a moved tag.
-
----
-
-# 📊 SARIF and GitHub Security Tab
-
-Security tools can generate SARIF reports.
-
-SARIF:
+External request reached:
 
 ```text
-Static Analysis Results Interchange Format
+/login
 ```
 
-Example Trivy output:
-
-```yaml
-- uses: aquasecurity/trivy-action@master
-  with:
-    image-ref: 'username/app:latest'
-    format: 'sarif'
-    output: 'trivy-results.sarif'
-
-- uses: github/codeql-action/upload-sarif@v3
-  with:
-    sarif_file: 'trivy-results.sarif'
-```
-
-This allows compatible security findings to be uploaded to GitHub's code-scanning/security interfaces.
-
----
-
-# 🔍 Dependency Review Action
-
-Trainer Day 49 introduced:
-
-```yaml
-- name: Check Dependencies for Vulnerabilities
-  uses: actions/dependency-review-action@v4
-  with:
-    fail-on-severity: critical
-```
-
-Important concept:
-
-```text
-Pull Request
-     ↓
-Dependency Changes
-     ↓
-Dependency Review
-     ↓
-Check New Dependencies
-```
-
-This is different from auditing the entire existing dependency tree.
-
-```text
-Dependency Review
-→ Review dependency changes in a PR
-
-npm audit
-→ Audit project npm dependencies
-```
-
----
-
-# 🧠 Day 49 Concepts Not Directly Used in the Capstone
-
-The trainer introduced several additional concepts that are important for interview preparation even though they were not all required in the final NodeGoat implementation.
-
-Remember these separately:
-
-```text
-GitHub Secret Scanning
-Push Protection
-Dependency Review Action
-Workflow Permissions
-OIDC
-SARIF
-Action Pinning
-```
-
----
-
-# 🔐 Secret Scanning vs Push Protection
-
-```text
-Secret Scanning
-      ↓
-Detect secret exposure
-
-Push Protection
-      ↓
-Prevent secret from being pushed
-```
-
-Interview answer:
-
-> "Secret scanning detects exposed credentials, while push protection tries to stop a detected secret before it reaches the repository."
-
----
-
-# 🔑 GitHub Secret Scanning
-
-GitHub can scan repositories for supported secret patterns.
-
-Basic idea:
-
-```text
-Developer Push
-      ↓
-GitHub
-      ↓
-Secret Detection
-      ↓
-Alert
-```
-
-This can complement pipeline-based secret scanners such as Gitleaks.
-
----
-
-# 🛡️ Push Protection
-
-Push protection acts earlier:
-
-```text
-Developer Push
-      ↓
-Secret Detected
-      ↓
-Push Blocked
-```
-
-It is therefore a prevention mechanism rather than only a detection mechanism.
-
----
-
-# 📦 Dependency Review Action
-
-Used for pull-request dependency changes.
-
-Example:
-
-```yaml
-uses: actions/dependency-review-action@v4
-```
-
-Concept:
-
-```text
-PR
- ↓
-Dependency Change
- ↓
-Dependency Review
- ↓
-Pass / Fail
-```
-
----
-
-# 📜 SARIF
-
-SARIF is a standard format used to exchange static analysis/security scan results.
-
-Useful flow:
-
-```text
-Security Tool
-     ↓
-SARIF Report
-     ↓
-GitHub
-     ↓
-Security / Code Scanning Interface
-```
-
----
-
-# 🔐 Action Pinning
-
-Basic:
-
-```yaml
-uses: actions/checkout@v4
-```
-
-Pinned:
-
-```yaml
-uses: actions/checkout@<commit-sha>
-```
-
-Interview idea:
-
-> "Pinning actions to commit SHAs provides stronger supply-chain control because the referenced code cannot silently change just because a tag moves."
-
----
-
-# 🔄 `workflow_call` vs `workflow_run` vs `repository_dispatch`
-
-| Feature | Purpose |
-|---|---|
-| `workflow_call` | Reuse another workflow |
-| `workflow_run` | Trigger after another workflow completes |
-| `repository_dispatch` | Trigger workflow from an external event |
-
-Quick memory:
-
-```text
-workflow_call
-→ Reuse
-
-workflow_run
-→ React after workflow
-
-repository_dispatch
-→ External trigger
-```
-
----
-
-# 🧠 GitHub Actions Inputs / Outputs / Artifacts
-
-## Input
-
-Value passed into a reusable workflow.
-
-```yaml
 with:
-  image-tag: abc123
-```
-
-## Output
-
-Value produced by a workflow.
-
-```yaml
-${{ needs.build.outputs.image-tag }}
-```
-
-## Artifact
-
-File transferred between workflow jobs.
 
 ```text
-nodegoat.tar
-semgrep-report.json
-trivy-report.json
-npm-audit-report.json
+HTTP 302
 ```
 
-Quick memory:
+The `302` was a redirect to the login route, so it demonstrated that the application was reachable and responding.
+
+---
+
+# OWASP ZAP
+
+## What is ZAP?
+
+OWASP ZAP = **OWASP Zed Attack Proxy**
+
+It is used for dynamic application security testing.
+
+It tests the running application.
 
 ```text
-Input
-→ Goes IN
-
-Output
-→ Comes OUT
-
-Artifact
-→ Carries FILES
+EC2 NodeGoat
+     ↓
+Running Web Application
+     ↓
+OWASP ZAP
+     ↓
+Security Findings
 ```
 
 ---
 
-# 🧠 `id` vs `outputs`
+# ZAP Scan Result
 
-Example:
-
-```yaml
-- name: Set image tag
-  id: meta
-  run: echo "image-tag=${{ github.sha }}" >> "$GITHUB_OUTPUT"
-```
-
-Here:
+The completed ZAP full scan tested:
 
 ```text
-id: meta
-→ Identifies the step
-
-$GITHUB_OUTPUT
-→ Creates the step output
-
-steps.meta.outputs.image-tag
-→ Reads the output
+71 URLs
 ```
 
-Job output:
+Results:
 
-```yaml
-outputs:
-  image-tag: ${{ steps.meta.outputs.image-tag }}
+```text
+FAIL-NEW: 0
+WARN-NEW: 16
+PASS: 125
 ```
 
-Then another job can use:
+Findings included examples such as:
 
-```yaml
-${{ needs.build.outputs.image-tag }}
+```text
+Directory browsing
+Vulnerable JavaScript libraries
+Missing security headers
+Cookie SameSite issues
+Source disclosure
+Dangerous JavaScript
+Reflected/DOM XSS
+```
+
+Important:
+
+> These findings are expected to be useful in this project because NodeGoat is intentionally vulnerable.
+
+---
+
+# ZAP Workflow Error
+
+The ZAP scan itself completed, but the workflow later failed when it attempted automatic GitHub issue creation.
+
+Error:
+
+```text
+403 Resource not accessible by integration
+```
+
+Meaning:
+
+```text
+ZAP scan
+   ↓
+Completed
+   ↓
+Attempt GitHub issue creation
+   ↓
+GitHub permission restriction
+   ↓
+403
+```
+
+This is an important distinction:
+
+> The security scan completed; the failure occurred in the post-scan GitHub issue creation step.
+
+---
+
+# Common NodeGoat Problems & Interview Explanation
+
+## 1. MongoDB `localhost` Problem
+
+### Problem
+
+Application container tries:
+
+```text
+mongodb://localhost:27017/nodegoat
+```
+
+### Why?
+
+Inside Docker, localhost refers to the same container.
+
+### Fix
+
+Use Compose service name:
+
+```text
+mongodb://mongo:27017/nodegoat
 ```
 
 ---
 
-# ⚡ `always()` vs `failure()` vs `continue-on-error`
+## 2. Docker Compose Service Communication
 
-## `always()`
+### Problem
 
-```yaml
-if: always()
-```
+Containers cannot communicate using hostnames you invent.
 
-Run regardless of the previous result.
+### Fix
 
-Good for:
+Use the actual Compose service name:
 
 ```text
-Reports
-Logs
-Cleanup
-Artifact upload
+mongo
 ```
 
-## `failure()`
-
-```yaml
-if: failure()
-```
-
-Run when a previous step/job has failed.
-
-## `continue-on-error`
-
-```yaml
-continue-on-error: true
-```
-
-Allow that step/job to continue without failing the whole execution in the normal way.
-
-Quick memory:
-
-```text
-always()
-→ Always execute
-
-failure()
-→ Execute after failure
-
-continue-on-error
-→ Don't let this failure stop execution normally
-```
+Docker's internal DNS resolves it.
 
 ---
 
-# 🧠 CI/CD vs DevSecOps
+## 3. Old Node.js Dependencies
+
+NodeGoat uses an intentionally old/vulnerable application stack.
+
+This can produce:
+
+```text
+deprecated package warnings
+security vulnerabilities
+npm warnings
+```
+
+Do not automatically assume every warning is a CI/CD failure.
+
+Interview explanation:
+
+> "NodeGoat is intentionally vulnerable, so deprecated dependencies and known vulnerabilities are expected. The purpose of the project is to detect and demonstrate these issues through DevSecOps tooling."
+
+---
+
+## 4. Docker Image Scanning
+
+### Problem
+
+A successful scanner execution can be misunderstood as zero vulnerabilities.
+
+### Correct interpretation
+
+```text
+Scanner exit-code 0
+≠
+Zero vulnerabilities
+```
+
+You must inspect the actual report/findings and configure severity thresholds separately.
+
+---
+
+## 5. ZAP 403
+
+### Problem
+
+ZAP completed but workflow failed during GitHub issue creation.
+
+```text
+403 Resource not accessible by integration
+```
+
+### Reason
+
+The GitHub Actions token did not have sufficient permission for that operation.
+
+### Interview Explanation
+
+> "The DAST scan itself completed successfully. The workflow failure happened afterward when the automation attempted to create a GitHub issue and GitHub rejected the operation because of token permissions."
+
+---
+
+# CI/CD vs DevSecOps — Important Interview Question
 
 ## CI/CD
 
 ```text
-Code
- ↓
 Build
  ↓
 Test
@@ -2990,8 +2054,6 @@ Deploy
 ## DevSecOps
 
 ```text
-Code
- ↓
 Build
  ↓
 Test
@@ -3011,408 +2073,588 @@ Deploy
 DAST
 ```
 
-## Interview Answer
+### Interview Answer
 
-> "CI/CD automates building, testing and delivery. DevSecOps extends that process by integrating security checks throughout the lifecycle."
-
----
-
-# 🎯 Most Important Interview Questions — GitHub Actions
-
-## What is GitHub Actions?
-
-> "GitHub Actions is a CI/CD automation platform integrated with GitHub. It allows workflows to execute automatically in response to repository events."
-
-## What is a runner?
-
-> "A runner is the execution environment where GitHub Actions jobs run."
-
-## What is a workflow?
-
-> "A workflow is a YAML-defined automation process containing triggers, jobs and steps."
-
-## What is a job?
-
-> "A job is a group of steps that runs on a runner."
-
-## What is a step?
-
-> "A step is an individual task inside a job, implemented using either `run` or `uses`."
-
-## What is `needs`?
-
-> "`needs` defines dependencies between jobs and controls execution order."
-
-## What is `if`?
-
-> "`if` evaluates a condition and determines whether a job or step should run."
-
-## What is `workflow_dispatch`?
-
-> "It allows a workflow to be manually triggered from GitHub."
-
-## What is `workflow_call`?
-
-> "It allows one workflow to call another reusable workflow."
-
-## What is `workflow_run`?
-
-> "It triggers a workflow after another workflow completes."
-
-## What is `repository_dispatch`?
-
-> "It allows an external system to send an event that triggers a GitHub Actions workflow."
+> "CI/CD automates building, testing and delivery. DevSecOps extends this process by integrating security checks throughout the lifecycle, including source-code scanning, secret detection, dependency scanning, container scanning and dynamic application testing."
 
 ---
 
-# 🎯 Most Important Interview Questions — DevSecOps
+# 🔥 Most Important Interview Concepts from Day 38–49
 
-## What is DevSecOps?
-
-> "DevSecOps integrates security into the DevOps lifecycle so security checks are automated throughout CI/CD."
-
-## What is SAST?
-
-> "Static Application Security Testing analyzes source code without running the application."
-
-## What is DAST?
-
-> "Dynamic Application Security Testing tests the running application."
-
-## What is dependency scanning?
-
-> "Dependency scanning identifies known vulnerabilities in third-party packages used by the application."
-
-## What is secret scanning?
-
-> "Secret scanning detects credentials such as API keys, passwords, tokens and private keys that may have been exposed."
-
-## Why use Trivy?
-
-> "Trivy scans container images and other targets for known security vulnerabilities."
-
-## Why use Gitleaks?
-
-> "Gitleaks detects secrets in source code and Git history."
-
-## Why use Semgrep?
-
-> "Semgrep performs static code analysis and can identify insecure coding patterns."
-
-## Why use Hadolint?
-
-> "Hadolint checks Dockerfiles for common mistakes and best-practice violations."
-
-## Why use ZAP?
-
-> "OWASP ZAP performs dynamic web application security testing against a running application."
-
----
-
-# 🎯 Most Important Interview Questions — Docker + DevSecOps
-
-## Why scan Docker images?
-
-> "A container image can contain vulnerabilities in base OS packages or application dependencies, so scanning helps identify issues before deployment."
-
-## Why use a SHA-based tag?
-
-> "A SHA-based tag provides a traceable link between the Docker image and the exact Git commit used to build it."
-
-## Why not only use `latest`?
-
-> "`latest` is mutable and does not uniquely identify a build. A commit-specific tag gives deterministic versioning."
-
-## Why use artifacts for Docker images?
-
-> "The Docker image can be built once, stored as an artifact, then scanned and published without rebuilding the image."
-
----
-
-# 🎯 Most Important Interview Questions — Security
-
-## What is least privilege?
-
-> "Least privilege means granting only the permissions required to perform the task and no more."
-
-## What is OIDC?
-
-> "OIDC allows GitHub Actions to authenticate with cloud providers using short-lived credentials instead of storing long-lived cloud keys."
-
-## What is SARIF?
-
-> "SARIF is a standardized format for security and static-analysis results that can be consumed by platforms such as GitHub."
-
-## Why pin GitHub Actions?
-
-> "Pinning actions to commit SHAs helps protect against supply-chain risks associated with mutable tags."
-
----
-
-# 🧠 Real-World Scenario Questions
-
-## Scenario: A developer accidentally commits an AWS access key. What should happen?
+## YAML
 
 ```text
-Detect
+Indentation-sensitive configuration language
+```
+
+## CI
+
+```text
+Build + Test code continuously
+```
+
+## CD
+
+```text
+Deliver/deploy validated code
+```
+
+## Workflow
+
+```text
+Trigger → Jobs → Steps
+```
+
+## Runner
+
+```text
+Machine that executes GitHub Actions
+```
+
+## Job
+
+```text
+Collection of steps
+```
+
+## `needs`
+
+```text
+Creates job dependency
+```
+
+## `if`
+
+```text
+Conditional execution
+```
+
+## `always()`
+
+```text
+Run even after failure
+```
+
+## `failure()`
+
+```text
+Run when previous execution failed
+```
+
+## Secrets
+
+```text
+Sensitive credentials/configuration
+```
+
+## Artifacts
+
+```text
+Files produced/stored by workflow
+```
+
+## Matrix
+
+```text
+Run same job across multiple configurations
+```
+
+## `workflow_call`
+
+```text
+Reusable workflow
+```
+
+## Composite Action
+
+```text
+Reusable collection of steps
+```
+
+## `workflow_run`
+
+```text
+Trigger after another workflow completes
+```
+
+## `repository_dispatch`
+
+```text
+External event trigger
+```
+
+## SAST
+
+```text
+Analyze source code
+```
+
+## DAST
+
+```text
+Test running application
+```
+
+## Dependency Scan
+
+```text
+Find vulnerable third-party packages
+```
+
+## Secret Scan
+
+```text
+Find leaked credentials
+```
+
+## Hadolint
+
+```text
+Dockerfile linting
+```
+
+## Trivy
+
+```text
+Container/filesystem vulnerability scanning
+```
+
+## ZAP
+
+```text
+Dynamic web application security testing
+```
+
+---
+
+# 🧠 Interview Scenario Questions
+
+## Q1. Why use reusable workflows?
+
+**Answer:**
+
+> "To avoid duplicating CI/CD logic. I can define build, test or Docker logic once and call it from multiple workflows using `workflow_call`."
+
+---
+
+## Q2. What is the difference between `workflow_call` and `workflow_run`?
+
+**Answer:**
+
+> "`workflow_call` is used to reuse another workflow. `workflow_run` triggers a workflow after another workflow has completed."
+
+---
+
+## Q3. Why use Docker image tags based on Git SHA?
+
+**Answer:**
+
+> "A commit-specific tag makes the image traceable to the exact source revision. If `sha-c49c556` is deployed, I can identify exactly which commit produced that image."
+
+---
+
+## Q4. Why not use only `latest`?
+
+**Answer:**
+
+> "`latest` is mutable and does not uniquely identify a build. A commit-specific tag provides traceability and makes rollback easier."
+
+---
+
+## Q5. Why use GitHub Secrets?
+
+**Answer:**
+
+> "Secrets prevent sensitive credentials such as Docker tokens and SSH keys from being hardcoded in the repository or workflow."
+
+---
+
+## Q6. What happens if a GitHub Actions job fails?
+
+**Answer:**
+
+> "By default, dependent jobs using `needs` will not run. Conditions such as `always()` can be used when a cleanup or reporting step must execute regardless of failure."
+
+---
+
+## Q7. What is the difference between an artifact and a Docker image?
+
+**Answer:**
+
+> "A workflow artifact is a file or collection of files stored by GitHub Actions. A Docker image is a container package containing the application and its runtime environment."
+
+---
+
+## Q8. Why scan Docker images?
+
+**Answer:**
+
+> "The base image and installed packages can contain known vulnerabilities. Image scanning helps identify those vulnerabilities before the image is deployed."
+
+---
+
+## Q9. Why is ZAP used after deployment?
+
+**Answer:**
+
+> "ZAP performs dynamic testing against a running application, so the application must be accessible before DAST can be performed."
+
+---
+
+## Q10. Why does NodeGoat use `mongo` instead of `localhost`?
+
+**Answer:**
+
+> "Because NodeGoat and MongoDB run in separate containers. Docker Compose provides internal DNS, so the application connects to MongoDB using the service name `mongo`."
+
+---
+
+## Q11. What is the difference between SAST and DAST?
+
+**Answer:**
+
+> "SAST analyzes application source code without executing it, while DAST tests the running application from the outside."
+
+---
+
+## Q12. What is the purpose of dependency scanning?
+
+**Answer:**
+
+> "It identifies known vulnerabilities in third-party libraries used by the application."
+
+---
+
+## Q13. Why scan secrets?
+
+**Answer:**
+
+> "To detect accidentally committed credentials such as API keys, passwords, tokens or private keys before they are misused."
+
+---
+
+## Q14. What is the purpose of Hadolint?
+
+**Answer:**
+
+> "Hadolint analyzes Dockerfiles for common mistakes and best-practice violations."
+
+---
+
+## Q15. What does Trivy do?
+
+**Answer:**
+
+> "Trivy can scan container images and filesystems for known vulnerabilities and security issues."
+
+---
+
+## Q16. Why run security checks in parallel?
+
+**Answer:**
+
+> "Independent checks can execute simultaneously, reducing overall pipeline execution time."
+
+---
+
+## Q17. What happened with the ZAP 403 error?
+
+**Answer:**
+
+> "The ZAP scan completed, but the workflow failed afterward while attempting to create a GitHub issue. GitHub returned `403 Resource not accessible by integration`, indicating insufficient permission for that operation."
+
+---
+
+# 🎯 How to Explain the NodeGoat Project in an Interview
+
+Use this answer:
+
+> "I built a DevSecOps capstone project using OWASP NodeGoat, which is an intentionally vulnerable Node.js application with MongoDB. I containerized the application using Docker and Docker Compose and created a GitHub Actions pipeline that integrates security into the CI/CD lifecycle.
+>
+> The pipeline performs source and security checks such as SAST, secret scanning, dependency scanning and Dockerfile linting. After that, the application is built into a Docker image, scanned with Trivy and then published to Docker Hub.
+>
+> The image is deployed to an AWS EC2 instance where NodeGoat and MongoDB run as containers. After deployment, I perform a health check and run OWASP ZAP as a DAST tool against the live application.
+>
+> One important issue I solved was the MongoDB connection. The application initially used localhost, but inside Docker localhost refers to the application container itself. I changed the connection to the Compose service name `mongo`.
+>
+> I also encountered a GitHub Actions 403 error after the ZAP scan when the workflow attempted to create a GitHub issue. The scan itself had completed; the failure was related to GitHub integration permissions."
+
+---
+
+# ⚡ 60-Second Revision — Day 38 → Day 49
+
+```text
+YAML
  ↓
-Block / Alert
+CI/CD Concepts
  ↓
-Revoke / Rotate Credential
+GitHub Actions
  ↓
-Remove Secret
+Triggers
  ↓
-Review Git History
-```
-
-Tools/features that may help:
-
-```text
-GitHub Push Protection
-GitHub Secret Scanning
-Gitleaks
-```
-
----
-
-## Scenario: Trivy finds a critical vulnerability. What happens?
-
-The scanner reports the vulnerability.
-
-Then pipeline policy decides whether:
-
-```text
-Fail
-```
-
-or:
-
-```text
-Warn / Report
-```
-
-For production environments, organizations commonly define severity thresholds according to their security policy.
-
----
-
-## Scenario: PR introduces a vulnerable package. Which concept is useful?
-
-```text
-Dependency Review
-```
-
-This can evaluate dependency changes introduced by the pull request.
-
----
-
-## Scenario: Workflow needs AWS access but you do not want long-lived AWS keys.
-
-Use:
-
-```text
-GitHub Actions OIDC
-        ↓
-AWS IAM Role
-        ↓
-Temporary Credentials
-```
-
----
-
-## Scenario: Independent scans are taking too long.
-
-Check whether they can run in parallel.
-
-Example:
-
-```text
+Matrix
+ ↓
+Runners
+ ↓
+Jobs / Steps
+ ↓
+Variables / Conditions
+ ↓
+Secrets
+ ↓
+Artifacts
+ ↓
+Cache
+ ↓
+Docker Build & Push
+ ↓
+Reusable Workflows
+ ↓
+Composite Actions
+ ↓
+Advanced Triggers
+ ↓
+End-to-End CI/CD
+ ↓
+DevSecOps
+ ↓
 SAST
+ ↓
 Secret Scan
+ ↓
 Dependency Scan
-Dockerfile Lint
+ ↓
+Hadolint
+ ↓
+Docker Build
+ ↓
+Trivy Image Scan
+ ↓
+Docker Hub
+ ↓
+EC2
+ ↓
+Health Check
+ ↓
+OWASP ZAP / DAST
 ```
-
-can often run simultaneously when they do not depend on one another.
-
-Use:
-
-```yaml
-needs:
-```
-
-only for actual dependencies.
 
 ---
 
-# 🧪 Common NodeGoat Problems & Fixes
+# 📝 Quick Command Revision
+
+## GitHub Actions Output
+
+```bash
+echo "value=test" >> "$GITHUB_OUTPUT"
+```
+
+## Git SHA
+
+```bash
+echo "${GITHUB_SHA}"
+```
+
+## Short SHA
+
+```bash
+echo "${GITHUB_SHA}" | cut -c1-7
+```
+
+## Docker Build
+
+```bash
+docker build -t username/app:latest .
+```
+
+## Docker Push
+
+```bash
+docker push username/app:latest
+```
+
+## Docker Run
+
+```bash
+docker run -d -p 4000:4000 username/app:latest
+```
+
+## Docker Compose
+
+```bash
+docker compose up -d
+```
+
+## Check Containers
+
+```bash
+docker ps
+```
+
+## Check Logs
+
+```bash
+docker logs <container>
+```
+
+## Test Health Endpoint
+
+```bash
+curl http://localhost:4000/health
+```
+
+## Check HTTP Status
+
+```bash
+curl -o /dev/null -s -w "%{http_code}" http://localhost:4000/health
+```
+
+---
+
+# 🔥 Important Errors to Remember
 
 | Problem | Reason | Fix / Lesson |
 |---|---|---|
-| Docker container exits | Missing/incorrect command | Check `docker ps -a`, logs and inspect |
-| MongoDB connection refused | Application used `localhost` | Use Docker Compose service name |
-| MongoDB health check failed | Wrong shell command | Use available `mongo` command |
-| Docker permission error on EC2 | User not in Docker group | Add user to Docker group |
-| Secret scanner misses history | Shallow checkout | Use `fetch-depth: 0` |
-| ZAP workflow returns 403 | GitHub issue-writing permission | Disable issue writing if not required |
-| Pipeline too slow | Independent jobs were sequential | Parallelize with `needs` |
-| Wrong Docker version deployed | Only `latest` used | Use SHA-based image tag |
-| Image scanned differs from pushed image | Image rebuilt between stages | Build once and reuse artifact |
-| Scanner passes but vulnerabilities exist | Exit code policy misunderstood | Inspect scan results separately |
+| YAML workflow not behaving | Wrong indentation/syntax | YAML indentation matters |
+| Job running unexpectedly | Missing `if` | Add condition |
+| Job running before dependency | Missing `needs` | Define dependency |
+| Secret exposed in workflow | Hardcoded credential | Use GitHub Secrets |
+| Docker push from feature branch | No branch condition | Restrict push using `if` |
+| Wrong image version | Only `latest` used | Add commit-based tag |
+| Full SHA instead of short SHA | `${{ github.sha }}` is full SHA | Generate 7-character SHA |
+| Repeated workflow logic | Duplicated jobs | Use `workflow_call` |
+| Repeated steps | Duplicated commands | Use composite action |
+| Docker containers can't reach MongoDB | Used `localhost` | Use Compose service name |
+| NodeGoat dependency warnings | Old/intentionally vulnerable dependencies | Expected in security-training project |
+| Image scan misunderstood | Scanner exit code interpreted incorrectly | Inspect actual vulnerability results |
+| ZAP workflow failed | GitHub issue creation returned 403 | Permission/integration problem |
+| Deployment unavailable | Service/port/security-group issue | Verify container, port and EC2 access |
 
 ---
 
-# ⚡ Quick Revision — DevSecOps
+# 🏆 Final Interview Checklist
+
+Before an interview, make sure you can explain these without looking them up:
+
+## GitHub Actions
 
 ```text
-DevSecOps
-→ Security integrated into DevOps
+✓ Workflow
+✓ Trigger
+✓ Job
+✓ Step
+✓ Runner
+✓ needs
+✓ if
+✓ always()
+✓ failure()
+✓ continue-on-error
+✓ env
+✓ secrets
+✓ artifacts
+✓ cache
+✓ matrix
+✓ outputs
+✓ GITHUB_OUTPUT
+✓ workflow_call
+✓ composite actions
+✓ workflow_run
+✓ repository_dispatch
+```
 
-SAST
-→ Source code security
+## Docker
 
-DAST
-→ Running application security
+```text
+✓ Image
+✓ Container
+✓ Dockerfile
+✓ Docker Build
+✓ Docker Push
+✓ Docker Hub
+✓ Tags
+✓ SHA-based tags
+✓ Docker Compose
+✓ Container networking
+✓ Service names
+```
 
-SCA
-→ Dependency security
+## DevSecOps
 
-Secret Scan
-→ Detect credentials
+```text
+✓ SAST
+✓ DAST
+✓ Secret scanning
+✓ Dependency scanning
+✓ Dockerfile scanning
+✓ Image scanning
+✓ Security gates
+✓ OWASP ZAP
+✓ Trivy
+✓ Hadolint
+```
 
-Hadolint
-→ Dockerfile
+## AWS / Deployment
 
-Trivy
-→ Container image
-
-ZAP
-→ Web application DAST
-
-OIDC
-→ Short-lived cloud authentication
-
-SARIF
-→ Standard security report format
-
-Push Protection
-→ Prevent secret from being pushed
-
-Least Privilege
-→ Minimum permissions
+```text
+✓ EC2
+✓ Application deployment
+✓ Port 4000
+✓ Docker containers
+✓ MongoDB container
+✓ Health check
+✓ External application verification
 ```
 
 ---
 
-# ⚡ Quick Revision — GitHub Actions
+# 💡 One-Line Memory Tricks
 
 ```text
-Workflow
-→ Complete automation definition
+YAML       → Configuration
 
-Trigger
-→ Starts workflow
+CI         → Build + Test
 
-Runner
-→ Executes jobs
+CD         → Deliver + Deploy
 
-Job
-→ Group of steps
+Runner     → Machine executing workflow
 
-Step
-→ Individual action/command
+Job        → Group of steps
 
-uses
-→ Existing action
+needs      → Dependency
 
-run
-→ Shell command
+if         → Condition
 
-needs
-→ Dependency
+Secrets    → Sensitive values
 
-if
-→ Condition
+Artifact   → Workflow-generated files
 
-always()
-→ Execute regardless of previous result
-
-failure()
-→ Execute after failure
-
-continue-on-error
-→ Allow failure without normal pipeline stop
-
-env
-→ Environment variables
-
-secrets
-→ Sensitive values
-
-inputs
-→ Values passed into reusable workflow
-
-outputs
-→ Values passed out
-
-id
-→ Identify a step
-
-GITHUB_OUTPUT
-→ Create step output
-
-Artifacts
-→ Share workflow files
-
-Matrix
-→ Multiple configurations
+Matrix     → Multiple configurations
 
 workflow_call
-→ Reusable workflow
+           → Reusable workflow
 
-workflow_run
-→ After another workflow completes
+Composite  → Reusable steps
 
-repository_dispatch
-→ External trigger
+SAST       → Source code security
+
+SCA        → Dependency security
+
+DAST       → Running application security
+
+Hadolint   → Dockerfile
+
+Trivy      → Image vulnerabilities
+
+ZAP        → Web application DAST
+
+Docker Hub → Image registry
+
+EC2        → Deployment server
 ```
 
 ---
 
-# ⚡ Quick Revision — Docker CI/CD
-
-```text
-Git Push
-   ↓
-GitHub Actions
-   ↓
-Docker Build
-   ↓
-Docker Image
-   ↓
-Image Scan
-   ↓
-Docker Hub
-   ↓
-Deployment
-```
-
-With SHA tagging:
-
-```text
-Git Commit
-   ↓
-SHA
-   ↓
-Docker Image Tag
-   ↓
-Registry
-   ↓
-Deployment
-```
-
----
-
-# 🏆 Final Day 38 → Day 49 Story
+# 🚀 Final Project Story
 
 ```text
 Day 38
@@ -3430,7 +2672,7 @@ End-to-End CI/CD
 Day 49
 DevSecOps
  ↓
-OWASP NodeGoat
+NodeGoat
  ↓
 Security Scanning
  ↓
@@ -3447,294 +2689,83 @@ Health Check
 OWASP ZAP
 ```
 
-The learning progression is:
-
-```text
-Configuration
-    ↓
-CI/CD Fundamentals
-    ↓
-GitHub Actions
-    ↓
-Reusable Automation
-    ↓
-Docker CI/CD
-    ↓
-Cloud Deployment
-    ↓
-DevSecOps
-    ↓
-Application Security
-```
-
----
-
-# 🎤 60-Second Interview Story — Day 38 → Day 49
-
-> "I started by learning YAML and CI/CD fundamentals, then built GitHub Actions workflows covering triggers, runners, jobs, steps, matrix strategies, conditions, secrets, artifacts and caching. I then learned reusable workflows using `workflow_call`, workflow inputs and outputs, and composite actions.
->
-> I applied those concepts to an end-to-end CI/CD project where code was tested, Docker images were built and published, and deployments were controlled using GitHub Actions.
->
-> For the DevSecOps stage, I extended the work using OWASP NodeGoat. I integrated JSHint, Semgrep, Gitleaks, npm audit, Hadolint, Trivy and OWASP ZAP. The pipeline builds the Docker image once, scans it, pushes a SHA-tagged image to Docker Hub, deploys that exact image to AWS EC2, performs a health check, and then runs ZAP DAST against the live application.
->
-> I also learned important security concepts such as least privilege, secret scanning, dependency review, action pinning, SARIF and OIDC."
-
----
-
-# 🏁 Final Interview Checklist
-
-Before an interview, make sure you can explain these in your own words:
-
-## GitHub Actions
-
-```text
-✓ Workflow
-✓ Trigger
-✓ Job
-✓ Step
-✓ Runner
-✓ uses
-✓ run
-✓ needs
-✓ if
-✓ always()
-✓ failure()
-✓ continue-on-error
-✓ env
-✓ secrets
-✓ artifacts
-✓ cache
-✓ matrix
-✓ inputs
-✓ outputs
-✓ id
-✓ GITHUB_OUTPUT
-✓ workflow_call
-✓ composite actions
-✓ workflow_run
-✓ repository_dispatch
-✓ permissions
-```
-
-## Docker
-
-```text
-✓ Image
-✓ Container
-✓ Dockerfile
-✓ Docker Build
-✓ Docker Push
-✓ Docker Hub
-✓ Image Tags
-✓ SHA Tags
-✓ Multi-stage builds
-✓ Non-root containers
-✓ Docker Compose
-✓ Networks
-✓ Service Names
-✓ Volumes
-✓ Healthchecks
-✓ depends_on
-```
-
-## DevSecOps
-
-```text
-✓ DevSecOps
-✓ SAST
-✓ DAST
-✓ SCA
-✓ Secret Scanning
-✓ Push Protection
-✓ Dependency Review
-✓ Dockerfile Scanning
-✓ Image Scanning
-✓ Security Gates
-✓ Trivy
-✓ Semgrep
-✓ Gitleaks
-✓ Hadolint
-✓ OWASP ZAP
-✓ SARIF
-✓ OIDC
-✓ Least Privilege
-✓ Action Pinning
-```
-
-## AWS / Deployment
-
-```text
-✓ EC2
-✓ SSH Deployment
-✓ Docker on EC2
-✓ Docker Compose on EC2
-✓ Docker Hub Authentication
-✓ SHA-based Deployment
-✓ Health Check
-```
-
----
-
-# 💡 One-Line Memory Tricks
-
-```text
-YAML
-→ Configuration
-
-CI
-→ Build + Test
-
-CD
-→ Deliver + Deploy
-
-Runner
-→ Machine executing workflow
-
-Job
-→ Group of steps
-
-Step
-→ Individual task
-
-needs
-→ Dependency
-
-if
-→ Condition
-
-Secrets
-→ Sensitive values
-
-Artifact
-→ Workflow-generated files
-
-Matrix
-→ Multiple configurations
-
-workflow_call
-→ Reusable workflow
-
-Composite
-→ Reusable steps
-
-workflow_run
-→ After workflow completion
-
-repository_dispatch
-→ External trigger
-
-SAST
-→ Source code security
-
-SCA
-→ Dependency security
-
-DAST
-→ Running application security
-
-Gitleaks
-→ Secrets
-
-Semgrep
-→ SAST
-
-npm audit
-→ Dependencies
-
-Hadolint
-→ Dockerfile
-
-Trivy
-→ Container Image
-
-ZAP
-→ Web Application DAST
-
-OIDC
-→ Short-lived cloud authentication
-
-SARIF
-→ Security report format
-
-Docker Hub
-→ Container registry
-
-EC2
-→ Deployment server
-```
-
----
-
-# 🎯 Final Mental Model
-
-When asked to design a secure GitHub Actions pipeline, think:
-
-```text
-1. Trigger
-   ↓
-2. Checkout
-   ↓
-3. Lint
-   ↓
-4. Test
-   ↓
-5. SAST
-   ↓
-6. Secret Scan
-   ↓
-7. Dependency Scan
-   ↓
-8. Dockerfile Scan
-   ↓
-9. Docker Build
-   ↓
-10. Image Scan
-   ↓
-11. Push Image
-   ↓
-12. Deploy
-   ↓
-13. Health Check
-   ↓
-14. DAST
-```
-
-Then ask:
-
-```text
-Can independent jobs run in parallel?
-Are secrets protected?
-Are workflow permissions minimal?
-Is the deployed image traceable to a commit?
-Can the same build artifact be reused?
-Should vulnerabilities block deployment?
-Can cloud authentication use OIDC?
-```
-
-That thought process is more important than memorizing individual YAML snippets.
-
----
-
-# 🔥 Final Project Reference
-
-Complete NodeGoat DevSecOps implementation:
-
-https://github.com/Aniruddhakharve/devsecops-capstone-project
-
-Use the repository to review:
-
-```text
-.github/workflows/
-Dockerfile
-.dockerignore
-docker-compose.yml
-Security workflows
-Deployment workflow
-Health check
-OWASP ZAP
-Docker configuration
-Project README
-```
-
 > **Core interview message:**  
-> "I progressed from understanding YAML and CI/CD concepts to building GitHub Actions workflows, reusable workflows and an end-to-end Docker CI/CD pipeline. I then extended that pipeline into a DevSecOps pipeline using OWASP NodeGoat, integrating SAST, secret scanning, dependency scanning, Dockerfile linting, container image scanning, AWS EC2 deployment and OWASP ZAP DAST."
+> "I progressed from understanding YAML and CI/CD concepts to building GitHub Actions workflows, reusable workflows and an end-to-end CI/CD pipeline. I then extended that pipeline into a DevSecOps pipeline using OWASP NodeGoat, integrating security checks, container scanning, Docker, Docker Hub, AWS EC2 deployment and OWASP ZAP DAST."
+
+---
+
+# ⭐ Most Important Things to Remember
+
+1. **CI/CD automates software delivery.**
+2. **GitHub Actions workflows are YAML files.**
+3. **Jobs run on runners.**
+4. **`needs` creates dependencies between jobs.**
+5. **`if` controls conditional execution.**
+6. **Secrets protect credentials.**
+7. **Artifacts store workflow-generated files.**
+8. **Matrix avoids duplicating workflows for multiple configurations.**
+9. **Reusable workflows prevent duplicated CI/CD logic.**
+10. **Composite actions package reusable steps.**
+11. **Docker packages the application and runtime environment.**
+12. **Commit-based image tags provide traceability.**
+13. **DevSecOps integrates security throughout CI/CD.**
+14. **SAST checks source code.**
+15. **Dependency scanning checks third-party packages.**
+16. **Secret scanning detects leaked credentials.**
+17. **Hadolint checks Dockerfiles.**
+18. **Trivy checks images/filesystems for vulnerabilities.**
+19. **DAST tests the running application.**
+20. **ZAP is used for web application DAST.**
+21. **Docker Compose service names provide container-to-container DNS.**
+22. **`localhost` inside a container means that same container.**
+23. **NodeGoat is intentionally vulnerable, so security findings are part of the learning exercise.**
+24. **A successful scanner execution does not automatically mean zero vulnerabilities.**
+25. **A pipeline failure must be traced to the exact stage — for example, the NodeGoat ZAP scan completed, while the later GitHub issue creation step failed with HTTP 403.**
+
+---
+
+# 🎯 Final Interview Revision Formula
+
+```text
+WHAT?
+→ What technology/tool is this?
+
+WHY?
+→ Why did we use it?
+
+HOW?
+→ How did we implement it?
+
+PROBLEM?
+→ What problem/error did we face?
+
+FIX?
+→ How did we solve it?
+
+RESULT?
+→ What did the pipeline/application achieve?
+```
+
+### Example — NodeGoat
+
+```text
+WHAT?
+→ OWASP NodeGoat DevSecOps project.
+
+WHY?
+→ To practice integrating security into CI/CD.
+
+HOW?
+→ GitHub Actions + Docker + security scanning + EC2 + ZAP.
+
+PROBLEM?
+→ MongoDB connection using localhost.
+
+FIX?
+→ Use Docker Compose service name "mongo".
+
+RESULT?
+→ NodeGoat deployed on EC2 and tested with health checks and ZAP.
+```
+
+**If you can explain every section above in your own words, you have the Day 38 → Day 49 interview revision covered.** 🚀
